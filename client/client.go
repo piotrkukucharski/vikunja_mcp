@@ -34,10 +34,17 @@ func (c *VikunjaClient) Request(ctx context.Context, method, path string, body i
 		bodyReader = bytes.NewReader(b)
 	}
 
-	fullURL, err := url.JoinPath(c.BaseURL, path)
+	u, err := url.Parse(c.BaseURL)
 	if err != nil {
-		return fmt.Errorf("failed to join url: %w", err)
+		return fmt.Errorf("failed to parse base url: %w", err)
 	}
+
+	rel, err := url.Parse(path)
+	if err != nil {
+		return fmt.Errorf("failed to parse path: %w", err)
+	}
+
+	fullURL := u.ResolveReference(rel).String()
 
 	req, err := http.NewRequestWithContext(ctx, method, fullURL, bodyReader)
 	if err != nil {
