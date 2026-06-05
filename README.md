@@ -58,7 +58,7 @@ go run main.go
 ### Running with Docker
 
 ```bash
-docker run -p 8080:8080 -e VIKUNJA_BASE_URL="https://api.vikunja.example.com" ghcr.io/yourusername/vikunja-mcp:latest
+docker run -p 8080:8080 -e VIKUNJA_BASE_URL="https://api.vikunja.example.com" ghcr.io/piotrkukucharski/vikunja_mcp:latest
 ```
 
 ### Running with Docker Compose
@@ -70,7 +70,7 @@ version: '3.8'
 
 services:
   vikunja-mcp:
-    image: ghcr.io/yourusername/vikunja-mcp:latest
+    image: ghcr.io/piotrkukucharski/vikunja_mcp:latest
     ports:
       - "8080:8080"
     environment:
