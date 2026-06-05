@@ -61,6 +61,29 @@ go run main.go
 docker run -p 8080:8080 -e VIKUNJA_BASE_URL="https://api.vikunja.example.com" ghcr.io/yourusername/vikunja-mcp:latest
 ```
 
+### Running with Docker Compose
+
+You can deploy the MCP server using Docker Compose. Here is an example config:
+
+```yaml
+version: '3.8'
+
+services:
+  vikunja-mcp:
+    image: ghcr.io/yourusername/vikunja-mcp:latest
+    ports:
+      - "8080:8080"
+    environment:
+      - VIKUNJA_BASE_URL=https://api.vikunja.example.com # Or http://vikunja:3456 if on the same network
+      - PORT=8080
+    restart: unless-stopped
+```
+
+Run it with:
+```bash
+docker compose up -d
+```
+
 ## How to Connect (MCP Client)
 
 Connect your MCP client to the server's SSE endpoint (in this case, it mounts on the root `http://localhost:8080/`).
