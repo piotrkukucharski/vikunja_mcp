@@ -93,6 +93,41 @@ Make sure your client is configured to send the required Vikunja JWT token as a 
 Authorization: Bearer <your-vikunja-token>
 ```
 
+## Health Check
+
+The server exposes a `/health` endpoint to monitor connectivity to the Vikunja API and the validity of your token:
+
+- **GET `/health`**
+  - **Reachability Check**: Checks if the Vikunja API is reachable at the configured `VIKUNJA_BASE_URL` (using public `/api/v1/info`). Returns `500 Internal Server Error` if Vikunja is down.
+  - **Auth Check (Optional)**: If the incoming request has an `Authorization` header, the health check validates the token by executing a lightweight request (`GET /api/v1/tasks?limit=1`). Returns `500` if the token is invalid or unauthorized.
+
+**Response Structure (Healthy):**
+```json
+{
+  "status": "ok",
+  "vikunja_reachable": true,
+  "auth_checked": true
+}
+```
+
+**Response Structure (Error - Service Unreachable):**
+```json
+{
+  "status": "error",
+  "error": "Vikunja service is unreachable or not working",
+  "details": "..."
+}
+```
+
+**Response Structure (Error - Token Invalid):**
+```json
+{
+  "status": "error",
+  "error": "Vikunja API token is invalid or unauthorized",
+  "details": "..."
+}
+```
+
 ## Available Tools
 
 The MCP server exposes a `manage_{entity}` tool for each supported resource. For example, `manage_tasks` or `manage_projects`.
