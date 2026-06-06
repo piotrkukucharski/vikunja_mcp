@@ -86,11 +86,24 @@ docker compose up -d
 
 ## How to Connect (MCP Client)
 
-Connect your MCP client to the server's SSE endpoint (in this case, it mounts on the root `http://localhost:8080/`).
-Make sure your client is configured to send the required Vikunja JWT token as a Bearer token in the request headers:
+Connect your MCP client to the server's SSE endpoint (by default, it runs on `http://localhost:8080/sse`).
 
-```http
-Authorization: Bearer <your-vikunja-token>
+### Claude Desktop Configuration
+
+Add the following configuration to your `claude_desktop_config.json` (typically located at `~/Library/Application Support/Claude/claude_desktop_config.json` on macOS or `%APPDATA%\Claude\claude_desktop_config.json` on Windows):
+
+```json
+{
+  "mcpServers": {
+    "vikunja": {
+      "type": "sse",
+      "url": "http://localhost:8080/sse",
+      "headers": {
+        "Authorization": "Bearer <your-vikunja-token>"
+      }
+    }
+  }
+}
 ```
 
 ## Health Check
